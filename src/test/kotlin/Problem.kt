@@ -18,24 +18,10 @@ internal class Problem {
         var output = 0
 
         input.forEach { line ->
-            var firstDigit: Int? = null
-            var secondDigit: Int? = null
+            val firstDigit = line.first{ it.isDigit() }.digitToInt()
+            val secondDigit = line.last{ it.isDigit() }.digitToInt()
 
-            line.forEach {
-                if (it.isDigit()) {
-                    if (firstDigit == null) {
-                        firstDigit = it.digitToInt()
-                    } else {
-                        secondDigit = it.digitToInt()
-                    }
-                }
-            }
-
-            if (secondDigit == null) {
-                secondDigit = firstDigit
-            }
-
-            output += "$firstDigit$secondDigit".toInt()
+            output += 10 * firstDigit + secondDigit
         }
 
         assertEquals(56049, output)
