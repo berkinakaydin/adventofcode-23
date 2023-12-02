@@ -23,7 +23,30 @@ class Day2 : AbstractDay(2) {
     }
 
     override fun question2(): Any {
-        TODO("Not yet implemented")
+        var output = 0
+
+        input.forEach { line ->
+            val game = parseInput(line)
+
+            var minBlue = Integer.MIN_VALUE
+            var minGreen = Integer.MIN_VALUE
+            var minRed = Integer.MIN_VALUE
+
+            game.subsets.forEach() {
+                if (it.blue >= minBlue) {
+                    minBlue = it.blue
+                }
+                if (it.red >= minRed) {
+                    minRed = it.red
+                }
+                if (it.green >= minGreen) {
+                    minGreen = it.green
+                }
+            }
+
+            output += minBlue * minRed * minGreen
+        }
+        return output
     }
 
     private fun parseInput(input: String): Game {

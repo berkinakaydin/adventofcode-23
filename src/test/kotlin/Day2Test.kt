@@ -19,7 +19,7 @@ class Day2Test {
 
     @Test
     fun question2() {
-        assertEquals(54530, day.question2())
+        assertEquals(66681, day.question2())
     }
 
     private var start: Long = 0L
