@@ -1,27 +1,27 @@
-import adventofcode_2023.Day2
+import adventofcode_2023.Day3
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInfo
 import kotlin.test.assertEquals
 
-class Day2Test {
-    private val day = Day2()
+class Day3Test {
+    private val day = Day3()
     private var start: Long = 0L
 
-//    init {
-//        val input = FileReader().readFileAsLinesUsingBufferedReader("src/test/resources/small-input.txt")
-//        day.input = input
-//    }
+    init {
+        val input = FileReader().readFileAsLinesUsingBufferedReader("src/test/resources/small-input.txt")
+        day.input = input
+    }
 
     @Test
     fun question1() {
-        assertEquals(2237, day.question1())
+        assertEquals(0, day.question1())
     }
 
     @Test
     fun question2() {
-        assertEquals(66681, day.question2())
+        assertEquals(0, day.question2())
     }
 
     @BeforeEach

@@ -2,10 +2,12 @@ import adventofcode_2023.Day1
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInfo
 import kotlin.test.assertEquals
 
 class Day1Test {
     private val day = Day1()
+    private var start: Long = 0L
 
 //    init {
 //        val input = FileReader().readFileAsLinesUsingBufferedReader("src/test/resources/small-input.txt")
@@ -22,16 +24,14 @@ class Day1Test {
         assertEquals(54530, day.question2())
     }
 
-    private var start: Long = 0L
-
     @BeforeEach
     fun beforeEach() {
-        start = System.currentTimeMillis();
+        start = System.nanoTime()
     }
 
     @AfterEach
-    fun afterEach() {
-        val end = System.currentTimeMillis();
-        println("Time taken: ${end - start}ms")
+    fun afterEach(testInfo: TestInfo) {
+        val end = System.nanoTime()
+        println("${testInfo.testClass.get().name} ${testInfo.testMethod.get().name} - Time taken: ${(end - start).toDouble() / 1_000_000}ms")
     }
 }
