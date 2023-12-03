@@ -9,7 +9,7 @@ class Day3 : AbstractDay(3) {
         var result = 0
 
         map.filter { mapItem -> mapItem.value.all { it.isDigit() } }.forEach {
-            if (lookVertical(map, it) || lookHorizontal(map, it)) {
+            if (findVertical(map, it) != null || findHorizontal(map, it) != null) {
                 result += it.value.toInt()
             }
         }
@@ -22,14 +22,14 @@ class Day3 : AbstractDay(3) {
         TODO("Not yet implemented")
     }
 
-    private fun lookVertical(map: List<MapItem>, item: MapItem): Boolean {
+    private fun findVertical(map: List<MapItem>, item: MapItem): MapItem? {
         val vertical = map.filter { it.rowIndex == item.rowIndex + 1 || it.rowIndex == item.rowIndex - 1 }
-        return vertical.any { it.firstColIndex >= item.firstColIndex - 1 && it.lastColIndex <= item.lastColIndex + 1 }
+        return vertical.find { it.firstColIndex >= item.firstColIndex - 1 && it.lastColIndex <= item.lastColIndex + 1 }
     }
 
-    private fun lookHorizontal(map: List<MapItem>, item: MapItem): Boolean {
+    private fun findHorizontal(map: List<MapItem>, item: MapItem): MapItem? {
         val horizontal = map.filter { it.rowIndex == item.rowIndex }
-        return horizontal.any { it.firstColIndex == item.firstColIndex - 1 || it.lastColIndex == item.lastColIndex + 1 }
+        return horizontal.find { it.firstColIndex == item.firstColIndex - 1 || it.lastColIndex == item.lastColIndex + 1 }
     }
 
     private fun parseMap(): List<MapItem> {
