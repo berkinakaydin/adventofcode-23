@@ -9,7 +9,7 @@ class Day3 : AbstractDay(3) {
         var result = 0
 
         map.filter { mapItem -> mapItem.value.all { it.isDigit() } }.forEach {
-            if (findVerticalAdjecent(map, it) != null || findHorizontalAdjecent(map, it) != null) {
+            if (findVerticalAdjecents(map, it).isNotEmpty() || findHorizontalAdjecents(map, it).isNotEmpty()) {
                 result += it.value.toInt()
             }
         }
@@ -28,21 +28,25 @@ class Day3 : AbstractDay(3) {
         while (mapIterator.hasNext()) {
             val item = mapIterator.next()
 
-            val verticalAdjecentGears = findVerticalAdjecent(map, item, "*")
-            val horizontalAdjecentGears = findHorizontalAdjecent(map, item, "*")
+            val verticalAdjecentGears = findVerticalAdjecents(map, item, "*")
+            val horizontalAdjecentGears = findHorizontalAdjecents(map, item, "*")
 
             (verticalAdjecentGears + horizontalAdjecentGears).forEach { gear ->
-                findVerticalAdjecent(map, gear)?.let { gearAdjescentItem ->
-                    if (gearAdjescentItem != item) {
-                        result += gearAdjescentItem.value.toInt() * item.value.toInt()
-                        mapIterator.remove()
+                findVerticalAdjecents(map, gear).let { gearAdjescentItems ->
+                    gearAdjescentItems.forEach { gearAdjescentItem ->
+                        if (gearAdjescentItem != item) {
+                            result += gearAdjescentItem.value.toInt() * item.value.toInt()
+                            mapIterator.remove()
+                        }
                     }
                 }
 
-                findHorizontalAdjecent(map, gear)?.let { gearAdjescentItem ->
-                    if (gearAdjescentItem != item) {
-                        result += gearAdjescentItem.value.toInt() * item.value.toInt()
-                        mapIterator.remove()
+                findHorizontalAdjecents(map, gear).let { gearAdjescentItems ->
+                    gearAdjescentItems.forEach { gearAdjescentItem ->
+                        if (gearAdjescentItem != item) {
+                            result += gearAdjescentItem.value.toInt() * item.value.toInt()
+                            mapIterator.remove()
+                        }
                     }
                 }
             }
@@ -50,24 +54,24 @@ class Day3 : AbstractDay(3) {
         return result
     }
 
-    private fun findVerticalAdjecent(map: List<MapItem>, item: MapItem, target: String): List<MapItem> {
+    private fun findVerticalAdjecents(map: List<MapItem>, item: MapItem, target: String): List<MapItem> {
         val vertical = map.filter { it.rowIndex == item.rowIndex + 1 || it.rowIndex == item.rowIndex - 1 }
         return vertical.filter { (it.firstColIndex in item.firstColIndex - 1..item.lastColIndex + 1 || it.lastColIndex in item.firstColIndex - 1..item.lastColIndex + 1) && it.value == target }
     }
 
-    private fun findVerticalAdjecent(map: List<MapItem>, item: MapItem): MapItem? {
+    private fun findVerticalAdjecents(map: List<MapItem>, item: MapItem): List<MapItem> {
         val vertical = map.filter { it.rowIndex == item.rowIndex + 1 || it.rowIndex == item.rowIndex - 1 }
-        return vertical.find { it.firstColIndex in item.firstColIndex - 1..item.lastColIndex + 1 || it.lastColIndex in item.firstColIndex - 1..item.lastColIndex + 1 }
+        return vertical.filter { it.firstColIndex in item.firstColIndex - 1..item.lastColIndex + 1 || it.lastColIndex in item.firstColIndex - 1..item.lastColIndex + 1 }
     }
 
-    private fun findHorizontalAdjecent(map: List<MapItem>, item: MapItem, target: String): List<MapItem> {
+    private fun findHorizontalAdjecents(map: List<MapItem>, item: MapItem, target: String): List<MapItem> {
         val horizontal = map.filter { it.rowIndex == item.rowIndex }
         return horizontal.filter { (it.lastColIndex == item.firstColIndex - 1 || it.firstColIndex == item.lastColIndex + 1) && it.value == target }
     }
 
-    private fun findHorizontalAdjecent(map: List<MapItem>, item: MapItem): MapItem? {
+    private fun findHorizontalAdjecents(map: List<MapItem>, item: MapItem): List<MapItem> {
         val horizontal = map.filter { it.rowIndex == item.rowIndex }
-        return horizontal.find { it.lastColIndex == item.firstColIndex - 1 || it.firstColIndex == item.lastColIndex + 1 }
+        return horizontal.filter { it.lastColIndex == item.firstColIndex - 1 || it.firstColIndex == item.lastColIndex + 1 }
     }
 
     private fun parseMap(): MutableList<MapItem> {
