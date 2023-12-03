@@ -16,7 +16,7 @@ class Day3Test {
 
     @Test
     fun question1() {
-        assertEquals(0, day.question1())
+        assertEquals(533775, day.question1())
     }
 
     @Test
