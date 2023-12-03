@@ -9,10 +9,10 @@ class Day3Test {
     private val day = Day3()
     private var start: Long = 0L
 
-    init {
-        val input = FileReader().readFileAsLinesUsingBufferedReader("src/test/resources/small-input.txt")
-        day.input = input
-    }
+//    init {
+//        val input = FileReader().readFileAsLinesUsingBufferedReader("src/test/resources/small-input.txt")
+//        day.input = input
+//    }
 
     @Test
     fun question1() {
@@ -21,7 +21,7 @@ class Day3Test {
 
     @Test
     fun question2() {
-        assertEquals(0, day.question2())
+        assertEquals(78236071, day.question2())
     }
 
     @BeforeEach
