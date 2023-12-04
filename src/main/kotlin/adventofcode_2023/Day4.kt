@@ -1,6 +1,7 @@
 package adventofcode_2023
 
 import AbstractDay
+import kotlin.math.pow
 
 class Day4 : AbstractDay(4) {
     override fun question1(): Any {
@@ -9,16 +10,7 @@ class Day4 : AbstractDay(4) {
         input.forEach { line ->
             val card = parseInput(line)
 
-            card.numbers.forEach {
-                if (card.winningNumbers.contains(it)) {
-                    if (card.score == 0) {
-                        card.score = 1
-                    } else {
-                        card.score *= 2
-                    }
-                }
-            }
-            result += card.score
+            result += 2.0.pow(numberOfWinningHands(card) - 1).toInt()
         }
         return result
     }
@@ -43,7 +35,7 @@ class Day4 : AbstractDay(4) {
     }
 
     private fun numberOfWinningHands(card: Card): Int {
-        return card.numbers.toSet().intersect(card.winningNumbers.toSet()).size
+        return card.numbers.intersect(card.winningNumbers.toSet()).size
     }
 
     private fun parseInput(line: String): Card {
@@ -59,7 +51,6 @@ class Day4 : AbstractDay(4) {
         val winningNumbers: List<Int>,
         val numbers: List<Int>,
     ) {
-        var score = 0
         var count = 1
     }
 }
