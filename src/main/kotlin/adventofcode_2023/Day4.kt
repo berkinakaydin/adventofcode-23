@@ -9,7 +9,7 @@ class Day4 : AbstractDay(4) {
         input.forEach { line ->
             val card = parseInput(line)
 
-            card.hand.forEach {
+            card.numbers.forEach {
                 if (card.winningNumbers.contains(it)) {
                     if (card.score == 0) {
                         card.score = 1
@@ -24,45 +24,32 @@ class Day4 : AbstractDay(4) {
     }
 
     override fun question2(): Any {
-        var result = 0
         val cards = mutableListOf<Card>()
+        var result = 0
 
         input.forEach { line ->
             val card = parseInput(line)
-            card.numberOfWinningHand = numberOfWinningHands(card)
             cards.add(card)
         }
 
-
-        var index = 0
-        while (index < cards.size) {
-            val card = cards[index]
-
-            for (i in card.id..<card.id + card.numberOfWinningHand) {
-                cards.addLast(cards[i])
+        cards.forEach { card ->
+            for (i in card.id..<card.id + numberOfWinningHands(card)) {
+                cards[i].count += card.count
             }
-
-            index++
-        }
-
-        return cards.groupingBy { it.id }.eachCount().values.sum()
-    }
-
-    private fun numberOfWinningHands(card: Card): Int {
-        var result = 0
-
-        card.hand.intersect(card.winningNumbers.toSet()).forEach { _ ->
-            result++
+            result += card.count
         }
 
         return result
     }
 
+    private fun numberOfWinningHands(card: Card): Int {
+        return card.numbers.toSet().intersect(card.winningNumbers.toSet()).size
+    }
+
     private fun parseInput(line: String): Card {
         val id = line.substringBefore(":").substringAfter(" ").trim().toInt()
-        val winningNumbers =
-            line.substringAfter(":").substringBefore("|").trim().split("\\s+".toRegex()).map { it.toInt() }
-        val hand = line.substringAfter("|").trim().split("\\s+".toRegex()).map { it.toInt() }
+        val winningNumbers = line.substringAfter(":").substringBefore("|").split(" ").mapNotNull { it.toIntOrNull() }
+        val hand = line.substringAfter("|").split(" ").mapNotNull { it.toIntOrNull() }
 
         return Card(id, winningNumbers, hand)
     }
@@ -70,10 +57,9 @@ class Day4 : AbstractDay(4) {
     class Card(
         val id: Int,
         val winningNumbers: List<Int>,
-        val hand: List<Int>,
+        val numbers: List<Int>,
     ) {
         var score = 0
-        var numberOfWinningHand = 0
-        var count = 0
+        var count = 1
     }
 }
