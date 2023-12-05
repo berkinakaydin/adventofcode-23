@@ -7,13 +7,13 @@ class Day5 : AbstractDay(5) {
 
         val seeds = input[0].substringAfter(": ").split(" ").map { it.toLong() }
 
-        val seedToSoilMap = mutableMapOf<Long, Long>()
-        val soilToFertilizerMap = mutableMapOf<Long, Long>()
-        val fertilizerToWaterMap = mutableMapOf<Long, Long>()
-        val waterToLightMap = mutableMapOf<Long, Long>()
-        val lightToTemperatureMap = mutableMapOf<Long, Long>()
-        val temperatureToHumidityMap = mutableMapOf<Long, Long>()
-        val humidityToLocationMap = mutableMapOf<Long, Long>()
+        val seedToSoilMap = mutableMapOf<Pair<Long, Long>, Long>()
+        val soilToFertilizerMap = mutableMapOf<Pair<Long, Long>, Long>()
+        val fertilizerToWaterMap = mutableMapOf<Pair<Long, Long>, Long>()
+        val waterToLightMap = mutableMapOf<Pair<Long, Long>, Long>()
+        val lightToTemperatureMap = mutableMapOf<Pair<Long, Long>, Long>()
+        val temperatureToHumidityMap = mutableMapOf<Pair<Long, Long>, Long>()
+        val humidityToLocationMap = mutableMapOf<Pair<Long, Long>, Long>()
 
         var index = 0
         while (index < input.size) {
@@ -24,9 +24,7 @@ class Day5 : AbstractDay(5) {
                     val initialSeed = input[index].split(" ")[1].toLong()
                     val incrementAs = input[index].split(" ")[2].toLong()
 
-                    for (i in 0..<incrementAs) {
-                        seedToSoilMap[initialSeed + i] = initialSoil + i
-                    }
+                    seedToSoilMap[Pair(initialSeed, initialSeed + incrementAs)] = initialSoil - initialSeed
 
                     index++
                 }
@@ -39,9 +37,7 @@ class Day5 : AbstractDay(5) {
                     val initialSoil = input[index].split(" ")[1].toLong()
                     val incrementAs = input[index].split(" ")[2].toLong()
 
-                    for (i in 0..<incrementAs) {
-                        soilToFertilizerMap[initialSoil + i] = initialFertilizer + i
-                    }
+                    soilToFertilizerMap[Pair(initialSoil, initialSoil + incrementAs)] = initialFertilizer - initialSoil
 
                     index++
                 }
@@ -54,9 +50,9 @@ class Day5 : AbstractDay(5) {
                     val initialFertilizer = input[index].split(" ")[1].toLong()
                     val incrementAs = input[index].split(" ")[2].toLong()
 
-                    for (i in 0..<incrementAs) {
-                        fertilizerToWaterMap[initialFertilizer + i] = initialWater + i
-                    }
+                    fertilizerToWaterMap[Pair(initialFertilizer, initialFertilizer + incrementAs)] =
+                        initialWater - initialFertilizer
+
 
                     index++
                 }
@@ -69,9 +65,7 @@ class Day5 : AbstractDay(5) {
                     val initialWater = input[index].split(" ")[1].toLong()
                     val incrementAs = input[index].split(" ")[2].toLong()
 
-                    for (i in 0..<incrementAs) {
-                        waterToLightMap[initialWater + i] = initialLight + i
-                    }
+                    waterToLightMap[Pair(initialWater, initialWater + incrementAs)] = initialLight - initialWater
 
                     index++
                 }
@@ -84,9 +78,8 @@ class Day5 : AbstractDay(5) {
                     val initialLight = input[index].split(" ")[1].toLong()
                     val incrementAs = input[index].split(" ")[2].toLong()
 
-                    for (i in 0..<incrementAs) {
-                        lightToTemperatureMap[initialLight + i] = initialTemperature + i
-                    }
+                    lightToTemperatureMap[Pair(initialLight, initialLight + incrementAs)] =
+                        initialTemperature - initialLight
 
                     index++
                 }
@@ -99,9 +92,8 @@ class Day5 : AbstractDay(5) {
                     val initialTemperature = input[index].split(" ")[1].toLong()
                     val incrementAs = input[index].split(" ")[2].toLong()
 
-                    for (i in 0..<incrementAs) {
-                        temperatureToHumidityMap[initialTemperature + i] = initialHumidity + i
-                    }
+                    temperatureToHumidityMap[Pair(initialTemperature, initialTemperature + incrementAs)] =
+                        initialHumidity - initialTemperature
 
                     index++
                 }
@@ -115,9 +107,8 @@ class Day5 : AbstractDay(5) {
                     val initialHumidity = input[index].split(" ")[1].toLong()
                     val incrementAs = input[index].split(" ")[2].toLong()
 
-                    for (i in 0..<incrementAs) {
-                        humidityToLocationMap[initialHumidity + i] = initialLocation + i
-                    }
+                    humidityToLocationMap[Pair(initialHumidity, initialHumidity + incrementAs)] =
+                        initialLocation - initialHumidity
 
                     index++
 
@@ -133,48 +124,13 @@ class Day5 : AbstractDay(5) {
         var minLocation = Long.MAX_VALUE
 
         seeds.forEach { seed ->
-            var soil = seedToSoilMap[seed]
-
-            if (soil == null) {
-                seedToSoilMap[seed] = seed
-                soil = seed
-            }
-
-            var fertilizer = soilToFertilizerMap[soil]
-            if (fertilizer == null) {
-                soilToFertilizerMap[soil] = soil
-                fertilizer = soil
-            }
-
-            var water = fertilizerToWaterMap[fertilizer]
-            if (water == null) {
-                fertilizerToWaterMap[fertilizer] = fertilizer
-                water = fertilizer
-            }
-
-            var light = waterToLightMap[water]
-            if (light == null) {
-                waterToLightMap[water] = water
-                light = water
-            }
-
-            var temperature = lightToTemperatureMap[light]
-            if (temperature == null) {
-                lightToTemperatureMap[light] = light
-                temperature = light
-            }
-
-            var humidity = temperatureToHumidityMap[temperature]
-            if (humidity == null) {
-                temperatureToHumidityMap[temperature] = temperature
-                humidity = temperature
-            }
-
-            var location = humidityToLocationMap[humidity]
-            if (location == null) {
-                humidityToLocationMap[humidity] = humidity
-                location = humidity
-            }
+            val soil = seed + (seedToSoilMap.filterKeys { it.first <= seed && it.second >= seed }.values.firstOrNull() ?: 0)
+            val fertilizer = soil + (soilToFertilizerMap.filterKeys { it.first <= soil && it.second >= soil }.values.firstOrNull() ?: 0)
+            val water = fertilizer + (fertilizerToWaterMap.filterKeys { it.first <= fertilizer && it.second >= fertilizer }.values.firstOrNull() ?: 0)
+            val light = water + (waterToLightMap.filterKeys { it.first <= water && it.second >= water }.values.firstOrNull() ?: 0)
+            val temperature = light + (lightToTemperatureMap.filterKeys { it.first <= light && it.second >= light }.values.firstOrNull() ?: 0)
+            val humidity = temperature + (temperatureToHumidityMap.filterKeys { it.first <= temperature && it.second >= temperature }.values.firstOrNull() ?: 0)
+            val location = humidity + (humidityToLocationMap.filterKeys { it.first <= humidity && it.second >= humidity }.values.firstOrNull() ?: 0)
 
             if (location < minLocation) {
                 minLocation = location
