@@ -1,18 +1,18 @@
-import adventofcode_2023.Day5
+import adventofcode_2023.Day6
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestInfo
 import kotlin.test.assertEquals
 
-class Day5Test {
-    private val day = Day5()
+class Day6Test {
+    private val day = Day6()
     private var start: Long = 0L
 
-    init {
-        val input = FileReader().readFileAsLinesUsingBufferedReader("src/test/resources/small-input.txt")
-        day.input = input
-    }
+//    init {
+//        val input = FileReader().readFileAsLinesUsingBufferedReader("src/test/resources/small-input.txt")
+//        day.input = input
+//    }
 
     @Test
     fun question1() {
