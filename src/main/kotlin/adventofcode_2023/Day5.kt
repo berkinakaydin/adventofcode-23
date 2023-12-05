@@ -3,18 +3,97 @@ package adventofcode_2023
 import AbstractDay
 
 class Day5 : AbstractDay(5) {
+    private val seedToSoilMap = mutableMapOf<Pair<Long, Long>, Long>()
+    private val soilToFertilizerMap = mutableMapOf<Pair<Long, Long>, Long>()
+    private val fertilizerToWaterMap = mutableMapOf<Pair<Long, Long>, Long>()
+    private val waterToLightMap = mutableMapOf<Pair<Long, Long>, Long>()
+    private val lightToTemperatureMap = mutableMapOf<Pair<Long, Long>, Long>()
+    private val temperatureToHumidityMap = mutableMapOf<Pair<Long, Long>, Long>()
+    private val humidityToLocationMap = mutableMapOf<Pair<Long, Long>, Long>()
+
     override fun question1(): Any {
-
         val seeds = input[0].substringAfter(": ").split(" ").map { it.toLong() }
+        parseInput()
 
-        val seedToSoilMap = mutableMapOf<Pair<Long, Long>, Long>()
-        val soilToFertilizerMap = mutableMapOf<Pair<Long, Long>, Long>()
-        val fertilizerToWaterMap = mutableMapOf<Pair<Long, Long>, Long>()
-        val waterToLightMap = mutableMapOf<Pair<Long, Long>, Long>()
-        val lightToTemperatureMap = mutableMapOf<Pair<Long, Long>, Long>()
-        val temperatureToHumidityMap = mutableMapOf<Pair<Long, Long>, Long>()
-        val humidityToLocationMap = mutableMapOf<Pair<Long, Long>, Long>()
+        var minLocation = Long.MAX_VALUE
 
+        seeds.forEach { seed ->
+            val soil =
+                seed + (seedToSoilMap.filterKeys { it.first <= seed && it.second >= seed }.values.firstOrNull() ?: 0)
+            val fertilizer =
+                soil + (soilToFertilizerMap.filterKeys { it.first <= soil && it.second >= soil }.values.firstOrNull()
+                    ?: 0)
+            val water =
+                fertilizer + (fertilizerToWaterMap.filterKeys { it.first <= fertilizer && it.second >= fertilizer }.values.firstOrNull()
+                    ?: 0)
+            val light =
+                water + (waterToLightMap.filterKeys { it.first <= water && it.second >= water }.values.firstOrNull()
+                    ?: 0)
+            val temperature =
+                light + (lightToTemperatureMap.filterKeys { it.first <= light && it.second >= light }.values.firstOrNull()
+                    ?: 0)
+            val humidity =
+                temperature + (temperatureToHumidityMap.filterKeys { it.first <= temperature && it.second >= temperature }.values.firstOrNull()
+                    ?: 0)
+            val location =
+                humidity + (humidityToLocationMap.filterKeys { it.first <= humidity && it.second >= humidity }.values.firstOrNull()
+                    ?: 0)
+
+            if (location < minLocation) {
+                minLocation = location
+            }
+        }
+
+        return minLocation
+    }
+
+    override fun question2(): Any {
+        parseInput()
+        val seedsAsInput = input[0].substringAfter(": ").split(" ").map { it.toLong() }
+
+        var minLocation = Long.MAX_VALUE
+
+        for (i in seedsAsInput.indices step 2) {
+            if (i + 1 < seedsAsInput.size) {
+                val start = seedsAsInput[i]
+                val end = seedsAsInput[i + 1] - 1
+                val range = start..start + end
+
+                for (seed in range) {
+
+                    val soil =
+                        seed + (seedToSoilMap.filterKeys { it.first <= seed && it.second >= seed }.values.firstOrNull()
+                            ?: 0)
+                    val fertilizer =
+                        soil + (soilToFertilizerMap.filterKeys { it.first <= soil && it.second >= soil }.values.firstOrNull()
+                            ?: 0)
+                    val water =
+                        fertilizer + (fertilizerToWaterMap.filterKeys { it.first <= fertilizer && it.second >= fertilizer }.values.firstOrNull()
+                            ?: 0)
+                    val light =
+                        water + (waterToLightMap.filterKeys { it.first <= water && it.second >= water }.values.firstOrNull()
+                            ?: 0)
+                    val temperature =
+                        light + (lightToTemperatureMap.filterKeys { it.first <= light && it.second >= light }.values.firstOrNull()
+                            ?: 0)
+                    val humidity =
+                        temperature + (temperatureToHumidityMap.filterKeys { it.first <= temperature && it.second >= temperature }.values.firstOrNull()
+                            ?: 0)
+                    val location =
+                        humidity + (humidityToLocationMap.filterKeys { it.first <= humidity && it.second >= humidity }.values.firstOrNull()
+                            ?: 0)
+
+                    if (location < minLocation) {
+                        minLocation = location
+                    }
+
+                }
+            }
+        }
+        return minLocation
+    }
+
+    private fun parseInput() {
         var index = 0
         while (index < input.size) {
             if (input[index] == "seed-to-soil map:") {
@@ -120,28 +199,6 @@ class Day5 : AbstractDay(5) {
 
             index++
         }
-
-        var minLocation = Long.MAX_VALUE
-
-        seeds.forEach { seed ->
-            val soil = seed + (seedToSoilMap.filterKeys { it.first <= seed && it.second >= seed }.values.firstOrNull() ?: 0)
-            val fertilizer = soil + (soilToFertilizerMap.filterKeys { it.first <= soil && it.second >= soil }.values.firstOrNull() ?: 0)
-            val water = fertilizer + (fertilizerToWaterMap.filterKeys { it.first <= fertilizer && it.second >= fertilizer }.values.firstOrNull() ?: 0)
-            val light = water + (waterToLightMap.filterKeys { it.first <= water && it.second >= water }.values.firstOrNull() ?: 0)
-            val temperature = light + (lightToTemperatureMap.filterKeys { it.first <= light && it.second >= light }.values.firstOrNull() ?: 0)
-            val humidity = temperature + (temperatureToHumidityMap.filterKeys { it.first <= temperature && it.second >= temperature }.values.firstOrNull() ?: 0)
-            val location = humidity + (humidityToLocationMap.filterKeys { it.first <= humidity && it.second >= humidity }.values.firstOrNull() ?: 0)
-
-            if (location < minLocation) {
-                minLocation = location
-            }
-        }
-
-        return minLocation
-    }
-
-    override fun question2(): Any {
-        TODO("Not yet implemented")
     }
 
 }
