@@ -196,9 +196,7 @@ class Day5 : AbstractDay(5) {
                     }
                 }
             }
-
             index++
         }
     }
-
 }
