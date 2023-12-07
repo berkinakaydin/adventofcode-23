@@ -16,12 +16,12 @@ class Day6Test {
 
     @Test
     fun question1() {
-        assertEquals(318728750L, day.question1())
+        assertEquals(6209190, day.question1())
     }
 
     @Test
     fun question2() {
-        assertEquals(37384986L, day.question2())
+        assertEquals(28545089, day.question2())
     }
 
     @BeforeEach
