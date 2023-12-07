@@ -32,6 +32,8 @@ class Day7 : AbstractDay(7) {
             val cards = line.split(" ")[0].map { Card(it) }
             val bid = line.split(" ")[1].toInt()
 
+            cards.map { if (it.name == 'J') it.value = 1 else it.value }
+
             val hand = Hand(bid, cards)
             hand.strenght = calculateStrenghtQ2(cards)
             hands.add(hand)
@@ -76,8 +78,12 @@ class Day7 : AbstractDay(7) {
     }
 
     private fun mostCommonCard(cards: List<Card>): Card {
-        var mostCommonCard = cards[0]
-        for (card in cards.distinctBy { it.value }) {
+        if (cards.all { it.name == 'J' }) {
+            return cards.first()
+        }
+
+        var mostCommonCard = cards.first { it.name != 'J' }
+        for (card in cards.filter { it.name != 'J' }.distinctBy { it.value }) {
             if (cards.count { it.value == card.value } > cards.count { it.value == mostCommonCard.value }) {
                 mostCommonCard = card
             }
@@ -126,9 +132,9 @@ class Day7 : AbstractDay(7) {
     }
 
     class Card(
-        var name: Char
+        var name: Char,
     ) {
-        val value = when (name) {
+        var value = when (name) {
             'A' -> 14
             'K' -> 13
             'Q' -> 12
