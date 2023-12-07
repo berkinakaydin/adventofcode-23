@@ -11,18 +11,13 @@ class Day7 : AbstractDay(7) {
             val bid = line.split(" ")[1].toInt()
 
             val hand = Hand(bid, cards)
-            hand.strenght = calculateStrenghtQ1(cards)
+            hand.strength = calculateStrengthQ1(cards)
             hands.add(hand)
         }
 
         processCards(hands)
 
-        var result = 0
-        hands.forEach { hand ->
-            result += hand.bid * hand.rank
-        }
-
-        return result
+        return calculateResult(hands)
     }
 
     override fun question2(): Any {
@@ -35,27 +30,30 @@ class Day7 : AbstractDay(7) {
             cards.map { if (it.name == 'J') it.value = 1 else it.value }
 
             val hand = Hand(bid, cards)
-            hand.strenght = calculateStrenghtQ2(cards)
+            hand.strength = calculateStrengthQ2(cards)
             hands.add(hand)
         }
 
         processCards(hands)
 
+        return calculateResult(hands)
+    }
+
+    private fun calculateResult(hands: List<Hand>): Int {
         var result = 0
         hands.forEach { hand ->
             result += hand.bid * hand.rank
         }
-
         return result
     }
 
     private fun processCards(hands: List<Hand>) {
         for (i in hands.indices) {
             for (j in i + 1..<hands.size) {
-                if (hands[i].strenght > hands[j].strenght) {
+                if (hands[i].strength > hands[j].strength) {
                     hands[i].rank++
-                } else if (hands[i].strenght == hands[j].strenght) {
-                    resolveTies(hands[i], hands[j])
+                } else if (hands[i].strength == hands[j].strength) {
+                    resolveTie(hands[i], hands[j])
                 } else {
                     hands[j].rank++
                 }
@@ -63,7 +61,7 @@ class Day7 : AbstractDay(7) {
         }
     }
 
-    private fun resolveTies(firstHand: Hand, secondHand: Hand) {
+    private fun resolveTie(firstHand: Hand, secondHand: Hand) {
         var cardIndex = 0
         while (cardIndex < firstHand.cards.size) {
             if (firstHand.cards[cardIndex].value > secondHand.cards[cardIndex].value) {
@@ -91,7 +89,7 @@ class Day7 : AbstractDay(7) {
         return mostCommonCard
     }
 
-    private fun calculateStrenghtQ1(cards: List<Card>): Int {
+    private fun calculateStrengthQ1(cards: List<Card>): Int {
         var strenght = 0
         for (card in cards.distinctBy { it.value }) {
             strenght += when (cards.count { it.value == card.value }) {
@@ -105,7 +103,7 @@ class Day7 : AbstractDay(7) {
         return strenght
     }
 
-    private fun calculateStrenghtQ2(cards: List<Card>): Int {
+    private fun calculateStrengthQ2(cards: List<Card>): Int {
         var strenght = 0
         val mostCommonCard = mostCommonCard(cards)
 
@@ -128,7 +126,7 @@ class Day7 : AbstractDay(7) {
         val bid: Int, val cards: List<Card>
     ) {
         var rank = 1
-        var strenght = 0
+        var strength = 0
     }
 
     class Card(
