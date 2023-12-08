@@ -21,7 +21,7 @@ class Day8Test {
 
     @Test
     fun question2() {
-        assertEquals(249356515, day.question2())
+        assertEquals(17099847107071, day.question2())
     }
 
     @BeforeEach
