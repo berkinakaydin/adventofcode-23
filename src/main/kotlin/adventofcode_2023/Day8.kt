@@ -27,7 +27,7 @@ class Day8 : AbstractDay(8) {
         val nodes = parseInput()
         val positions = nodes.filter { it.name.endsWith('A') }.toMutableList()
 
-        val numberOfIterationsList = mutableListOf<Int>()
+        var result = 1L
         positions.forEach {
             var numberOfIteration = 0
             var position = it
@@ -44,35 +44,19 @@ class Day8 : AbstractDay(8) {
                     }
                 }
             }
-            numberOfIterationsList.add(numberOfIteration)
+            result = findLCM(result, numberOfIteration.toLong())
         }
 
-        return findLCM(numberOfIterationsList.map { it.toLong() }.toLongArray())
+        return result
     }
 
-    private fun findLCM(numbers: LongArray): Long {
-        // Function to find the LCM of two numbers
-        fun findLCMOfTwo(a: Long, b: Long): Long {
-            // Find the greatest common divisor (GCD) using Euclidean algorithm
-            fun findGCD(x: Long, y: Long): Long = if (y.toInt() == 0) x else findGCD(y, x % y)
+    private fun findLCM(a: Long, b: Long): Long {
+        // Function to find the GCD of two long values
+        fun findGCD(x: Long, y: Long): Long = if (y == 0L) x else findGCD(y, x % y)
 
-            // LCM = (a * b) / GCD(a, b)
-            val gcd = findGCD(a, b)
-            return (a * b) / gcd
-        }
-
-        // Check if the array is not empty
-        require(numbers.isNotEmpty()) { "Array must not be empty" }
-
-        // Initialize lcm with the first number
-        var lcm = numbers[0].toLong()
-
-        // Iterate through the remaining numbers and find the LCM
-        for (i in 1..<numbers.size) {
-            lcm = findLCMOfTwo(lcm, numbers[i])
-        }
-
-        return lcm
+        // LCM = (a * b) / GCD(a, b)
+        val gcd = findGCD(a, b)
+        return (a * b) / gcd
     }
 
     private fun parseInput(): List<Node> {
