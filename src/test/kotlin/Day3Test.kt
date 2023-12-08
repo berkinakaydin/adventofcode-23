@@ -9,11 +9,6 @@ class Day3Test {
     private val day = Day3()
     private var start: Long = 0L
 
-//    init {
-//        val input = FileReader().readFileAsLinesUsingBufferedReader("src/test/resources/small-input.txt")
-//        day.input = input
-//    }
-
     @Test
     fun question1() {
         assertEquals(533775, day.question1())
