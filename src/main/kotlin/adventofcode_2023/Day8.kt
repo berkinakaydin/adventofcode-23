@@ -2,7 +2,7 @@ package adventofcode_2023
 
 import AbstractDay
 
-class Day8 : AbstractDay(8) {
+class Day8 : AbstractDay() {
     override fun question1(): Any {
         val directions = input[0].toCharArray()
         val nodes = parseInput()

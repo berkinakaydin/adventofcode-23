@@ -2,7 +2,7 @@ package adventofcode_2023
 
 import AbstractDay
 
-class Day6 : AbstractDay(6) {
+class Day6 : AbstractDay() {
     override fun question1(): Any {
         val times = input[0].replace(Regex("[^0-9 ]"), "").split(" ").filter { it.isNotBlank() }.map { it.toLong() }
         val distances = input[1].replace(Regex("[^0-9 ]"), "").split(" ").filter { it.isNotBlank() }.map { it.toLong() }

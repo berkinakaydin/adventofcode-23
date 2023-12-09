@@ -2,7 +2,7 @@ package adventofcode_2023
 
 import AbstractDay
 
-class Day5 : AbstractDay(5) {
+class Day5 : AbstractDay() {
     private val seedToSoilMap = mutableMapOf<Pair<Long, Long>, Long>()
     private val soilToFertilizerMap = mutableMapOf<Pair<Long, Long>, Long>()
     private val fertilizerToWaterMap = mutableMapOf<Pair<Long, Long>, Long>()

@@ -3,7 +3,7 @@ package adventofcode_2023
 import AbstractDay
 import kotlin.math.pow
 
-class Day4 : AbstractDay(4) {
+class Day4 : AbstractDay() {
     override fun question1(): Any {
         var result = 0
 

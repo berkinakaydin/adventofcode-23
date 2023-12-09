@@ -2,7 +2,7 @@ package adventofcode_2023
 
 import AbstractDay
 
-class Day2 : AbstractDay(2) {
+class Day2 : AbstractDay() {
     override fun question1(): Any {
         val targetBlue = 14
         val targetRed = 12

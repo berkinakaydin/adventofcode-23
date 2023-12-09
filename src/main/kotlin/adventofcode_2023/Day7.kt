@@ -2,7 +2,7 @@ package adventofcode_2023
 
 import AbstractDay
 
-class Day7 : AbstractDay(7) {
+class Day7 : AbstractDay() {
     override fun question1(): Any {
         val hands = mutableListOf<Hand>()
 

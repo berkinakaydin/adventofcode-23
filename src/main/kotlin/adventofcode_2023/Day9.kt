@@ -2,7 +2,7 @@ package adventofcode_2023
 
 import AbstractDay
 
-class Day9 : AbstractDay(9) {
+class Day9 : AbstractDay() {
     override fun question1(): Any {
         val histories = input.map { line -> line.split(" ").map { it.toInt() } }
 

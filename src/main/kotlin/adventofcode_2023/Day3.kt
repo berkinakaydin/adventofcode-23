@@ -2,7 +2,7 @@ package adventofcode_2023
 
 import AbstractDay
 
-class Day3 : AbstractDay(3) {
+class Day3 : AbstractDay() {
     override fun question1(): Any {
         val map = parseMap()
 
